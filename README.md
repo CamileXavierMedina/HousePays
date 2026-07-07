@@ -17,7 +17,7 @@
 
  ├── 📁 HousePays-back (Pasta com o código C#)
  
- ├── 📁 housepays-front (Pasta com o código React/TS)
+ ├── 📁 HousePays-front (Pasta com o código React/TS)
  
  └── 📄 HousePays.sln (Arquivo de solução na raiz)
 
