@@ -60,6 +60,66 @@ Lista todas as pessoas cadastradas, exibindo:
 * Saldo (receita – despesa) de cada uma.
   
 ##### Ao final da listagem, será exibido o total geral de todas as pessoas, incluindo o total de receitas, o total de despesas e o saldo líquido.
+### Executando o Back-end (API ASP.NET Core)
+
+O back-end utiliza o **SQLite**, o que significa que **não é necessário instalar nenhum servidor de banco de dados**. O arquivo do banco será criado automaticamente na primeira execução da API.
+
+No terminal, navegue até a pasta do back-end:
+
+```bash
+cd HousePays-back
+```
+
+Execute o comando para restaurar as dependências e iniciar a API:
+
+```bash
+dotnet run
+```
+
+A API estará disponível localmente, normalmente em um dos seguintes endereços:
+
+- `http://localhost:5000`
+- `http://localhost:5200`
+
+> **Observação:** Verifique no terminal a porta utilizada durante a execução.
+
+> [!TIP]
+> **Visualização opcional do banco de dados**
+>
+> Caso deseje visualizar as tabelas de pessoas e transações em tempo real, abra o **DBeaver**, crie uma nova conexão do tipo **SQLite** e selecione o arquivo `.db` gerado automaticamente dentro da pasta **HousePays-back**.
+
+---
+
+### Executando o Front-end (React + TypeScript + Vite)
+
+Com a API em execução, inicie o painel web desenvolvido em **React**.
+
+Abra uma nova janela do terminal e navegue até a pasta do front-end:
+
+```bash
+cd HousePays-front
+```
+
+Instale as dependências do projeto:
+
+```bash
+npm install
+```
+
+Inicie o servidor de desenvolvimento do Vite:
+
+```bash
+npm run dev
+```
+
+Abra o navegador e acesse o endereço informado no terminal, normalmente:
+
+- `http://localhost:5173`
+
+> [!IMPORTANT]
+> **Comunicação entre Front-end e Back-end**
+>
+> Mantenha o terminal da **API ASP.NET Core** em execução enquanto utiliza o Front-end. Dessa forma, todas as informações serão carregadas e persistidas corretamente no banco de dados.
 
 ## Clone o Repositório
 
