@@ -1,1 +1,3 @@
-<Solution />
+<Solution>
+  <Project Path="HousePays-back/HousePays-back.csproj" />
+</Solution>
