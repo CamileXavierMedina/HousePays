@@ -29,3 +29,8 @@ using(var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
 }
+
+//endpoint de teste
+app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta prs rotas!");
+
+app.Run();
