@@ -45,7 +45,9 @@ app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta prs r
 //lista as pessoas
 app.MapGet("/pessoas", async (AppDbContext db) =>
 {
-    var pessoas = await db.Pessoas.ToListAsync();
+    var pessoas = await db.Pessoas
+    .Include(p => p.Transacoes)// traaz todas movimentacoes da pessoa x
+    .ToListAsync();
     return Results.Ok(pessoas);
 });
 
