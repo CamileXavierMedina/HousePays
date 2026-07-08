@@ -5,8 +5,7 @@ using HousePays.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 //configura o BD sqlite 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=housepays.db"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=housepays.db"));
 
 //coonfig. o cors pro react acessar a api
 builder.Services.AddCors(options =>
@@ -14,8 +13,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReact", policy =>
     {
         policy.WithOrigins("http://localhost:5173")//porta que o react roda
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+        .AllowAnyHeader().AllowAnyMethod();
     });
 });
 
@@ -45,10 +43,32 @@ app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta prs r
 //lista as pessoas
 app.MapGet("/pessoas", async (AppDbContext db) =>
 {
-    var pessoas = await db.Pessoas
-    .Include(p => p.Transacoes)// traaz todas movimentacoes da pessoa x
+    var pessoas = await db.Pessoas.Include(p => p.Transacoes)// traaz todas movimentacoes da pessoa x
     .ToListAsync();
     return Results.Ok(pessoas);
+});
+
+//rota pra consulta de totais
+app.MapGet("/pessoas/totais", async (AppDbContext db) =>
+{
+    var pessoas = await db.Pessoas.Include(p => p.Transacoes).ToListAsync();
+
+    //transf. a lista de pessoas com + e -
+    var relatorio = pessoas.Select(p => new
+    {
+        p.Id,
+        p.Nome,
+        p.Idade,
+
+        //filtra e soma so tipo = receita
+        TotalReceitas = p.Transacoes.Where(t => t.Tipo == TipoTransacao.Receita).Sum(t => t.Valor),
+
+        // calculo do saldo R - D
+        Saldo = p.Transacoes.Where(t => t.Tipo == TipoTransacao.Receita).Sum(t => t.Valor) -
+                p.Transacoes.Where(t => t.Tipo == TipoTransacao.Despesa).Sum(t => t.Valor)
+    });
+
+    return Results.Ok(relatorio);
 });
 
 //cadastra alguem novo
