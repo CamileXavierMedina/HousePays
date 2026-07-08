@@ -19,6 +19,12 @@ builder.Services.AddCors(options =>
     });
 });
 
+//evita loop eterno
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
+
 var app = builder.Build();
 
 //ativa allow do cors
@@ -34,12 +40,13 @@ using(var scope = app.Services.CreateScope())
 //endpoint de teste incial
 app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta prs rotas!");
 
-//ROTA DE PESSOAS//
+//--ROTA DE PESSOAS--//
 
 //lista as pessoas
 app.MapGet("/pessoas", async (AppDbContext db) =>
 {
     var pessoas = await db.Pessoas.ToListAsync();
+    return Results.Ok(pessoas);
 });
 
 //cadastra alguem novo
@@ -78,6 +85,52 @@ app.MapDelete("/pessoas/{id:guid}", async (Guid id, AppDbContext db) =>
     await db.SaveChangesAsync();
 
     return Results.NoContent();
+});
+
+//--Rota de Transacoes--//
+
+//lista todas transac. cadastradas
+app.MapGet("/transacoes", async (AppDbContext db) =>
+{
+    var transacoes = await db.Transacoes
+        .Include(t => t.Pessoa)//junta com os dados de pessoa
+        .ToListAsync();
+    return Results.Ok(transacoes);
+});
+
+//cadastra nova transac.
+app.MapPost("/transacoes", async (Transacao novaTransacao, AppDbContext db) =>
+{
+    if (string.IsNullOrWhiteSpace(novaTransacao.Descricao))
+    {
+        return Results.BadRequest("A desrcrição da transação é obrigatoria!");
+    }
+
+    //valor maior que zero
+    if  (novaTransacao.Valor <= 0)
+    {
+        return Results.BadRequest("O valor da transação deve ser maior que zero!");
+    }
+
+    //verifica se apessoa existe no banco de dados
+    var pessoa = await db.Pessoas.FindAsync(novaTransacao.PessoaId);
+    if (pessoa == null)
+    {
+        return Results.BadRequest("A pessoa informada pra esta transação nao foi identificada.");
+    }
+
+    //menor de idade so cadastra despesas
+    if (pessoa.Idade < 18 && novaTransacao.Tipo == TipoTransacao.Receita)
+    {
+        return Results.BadRequest($"A pessoa '{pessoa.Nome}' tem apenas {pessoa.Idade} anos e, por isso so pode cadastrar despesas!");
+    }
+
+    novaTransacao.Pessoa = null;
+
+    db.Transacoes.Add(novaTransacao);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/transacoes/{novaTransacao.Id}", novaTransacao);
 });
 
 app.Run();
