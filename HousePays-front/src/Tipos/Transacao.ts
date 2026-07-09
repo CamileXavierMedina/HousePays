@@ -1,3 +1,4 @@
+// regras de tipos para garantir que a transaçao tenha os dados certos no front
 export const TipoTransacao = {
     Receita: 0,
     Despesa: 1

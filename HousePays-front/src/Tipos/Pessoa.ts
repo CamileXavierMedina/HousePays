@@ -1,3 +1,4 @@
+// regras de tipos para garantir que o morador tenha os dados certos no front
 import type { Transacao } from './Transacao';
 
 export interface Pessoa {

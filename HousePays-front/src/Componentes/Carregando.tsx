@@ -1,3 +1,4 @@
+// icone giratorio de carregamento para mostrar enquanto os dados nao chegam
 import React from 'react';
 import { RefreshCw } from 'lucide-react';
 

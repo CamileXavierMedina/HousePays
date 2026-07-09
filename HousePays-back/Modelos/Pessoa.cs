@@ -1,3 +1,4 @@
+// representa a tabela de moradores no banco de dados com nome e idade
 using System;
 using System.Collections.Generic;
 

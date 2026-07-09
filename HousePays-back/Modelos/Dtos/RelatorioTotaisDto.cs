@@ -1,3 +1,4 @@
+// estrutura para devolver o relatorio financeiro completo da casa com saldo geral
 using System.Collections.Generic;
 
 namespace HousePays.Modelos.Dtos

@@ -1,3 +1,4 @@
+// estrutura para devolver os totais de receitas, despesas e saldo de uma pessoa
 using System;
 
 namespace HousePays.Modelos.Dtos

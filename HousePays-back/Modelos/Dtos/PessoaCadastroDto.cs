@@ -1,3 +1,4 @@
+// dados necessarios para cadastrar um morador que vem do front-end
 namespace HousePays.Modelos.Dtos
 {
     public class PessoaCadastroDto

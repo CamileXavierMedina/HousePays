@@ -1,3 +1,4 @@
+// representa a tabela de transaçoes no banco de dados com valor, tipo e morador
 using System;
 
 namespace HousePays.Modelos

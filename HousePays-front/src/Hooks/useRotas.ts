@@ -1,3 +1,4 @@
+// controla qual tela deve aparecer quando o usuario clica no menu
 import { useState, useEffect } from 'react';
 
 export type Rota = 'dashboard' | 'pessoas' | 'transacoes';

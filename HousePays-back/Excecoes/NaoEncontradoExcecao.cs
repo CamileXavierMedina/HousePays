@@ -1,3 +1,4 @@
+// erro customizado para quando buscamos algo que nao existe no banco
 using System;
 
 namespace HousePays.Excecoes

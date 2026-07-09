@@ -1,3 +1,4 @@
+// erro customizado para quando alguma regra do sistema nao for seguida
 using System;
 
 namespace HousePays.Excecoes

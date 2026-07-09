@@ -1,3 +1,4 @@
+// dados necessarios para registrar uma transaçao que vem do front-end
 using System;
 
 namespace HousePays.Modelos.Dtos
