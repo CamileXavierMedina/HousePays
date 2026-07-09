@@ -32,6 +32,11 @@ interface PessoaCompleta {
 export default function App() {
     //estados para dados API
     const [pessoas, setPessoas] = useState<PessoaTotais[]>([]);
+    const [totaisGerais, setTotaisGerais] = useState({
+        totalReceitas: 0,
+        totalDespesas: 0,
+        saldoLiquido: 0
+    });
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -62,7 +67,12 @@ export default function App() {
                 throw new Error('Não foi possível conectar ao Back-end. Certifique-se de que a API está rodando!');
             }
             const dados = await response.json();
-            setPessoas(dados);
+            setPessoas(dados.pessoas || []);
+            setTotaisGerais({
+                totalReceitas: dados.totalReceitasGeral || 0,
+                totalDespesas: dados.totalDespesasGeral || 0,
+                saldoLiquido: dados.saldoLiquidoGeral || 0
+            });
         } catch (err: any) {
             setError(err.message || 'Erro ao carregar dados');
         } finally {
@@ -207,10 +217,10 @@ export default function App() {
         }
     };
 
-    //calculos para os cards superiores
-    const totalReceitasGeral = pessoas.reduce((acc, p) => acc + p.totalReceitas, 0);
-    const totalDespesasGeral = pessoas.reduce((acc, p) => acc + p.totalDespesas, 0);
-    const saldoGeral = totalReceitasGeral - totalDespesasGeral;
+    //obtem os totais consolidados diretamente do backend
+    const totalReceitasGeral = totaisGerais.totalReceitas;
+    const totalDespesasGeral = totaisGerais.totalDespesas;
+    const saldoGeral = totaisGerais.saldoLiquido;
 
     return (
         <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
