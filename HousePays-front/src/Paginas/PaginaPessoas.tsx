@@ -31,7 +31,7 @@ export const PaginaPessoas: React.FC<PaginaPessoasProps> = ({
     loadingDetalhes,
     obterDetalhes
 }) => {
-    // Resolve os totais de pessoas com React 19 use()
+    // resolve os totais de pessoas com react 19 use()
     const relatorio = use(pessoasPromise);
     const { pessoas } = relatorio;
 
@@ -52,14 +52,14 @@ export const PaginaPessoas: React.FC<PaginaPessoasProps> = ({
         try {
             await onCadastrar(formCadastro.nome, idadeNum);
         } catch (err: any) {
-            // erroCadastro já é tratado no hook de pessoas
+            // errocadastro ja e tratado no hook de pessoas
         }
     };
 
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Formulário de Cadastro de Moradores */}
+                {/* formulario de cadastro de moradores */}
                 <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-100 h-fit">
                     <div className="flex items-center gap-2 mb-4">
                         <Plus className="w-5 h-5 text-blue-600" />
@@ -87,7 +87,7 @@ export const PaginaPessoas: React.FC<PaginaPessoasProps> = ({
                     </form>
                 </div>
 
-                {/* Listagem Simplificada de Moradores */}
+                {/* listagem simplificada de moradores */}
                 <div className="bg-white p-6 rounded-2xl shadow-xs border border-slate-100 lg:col-span-2">
                     <div className="flex items-center gap-2 mb-4">
                         <h2 className="text-lg font-bold text-slate-800">Moradores Cadastrados</h2>
@@ -124,7 +124,7 @@ export const PaginaPessoas: React.FC<PaginaPessoasProps> = ({
                                                     <button
                                                         onClick={() => onExcluirPessoa(p.id, p.nome)}
                                                         title="Remover Cadastro"
-                                                        className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-rose-600 transition-colors cursor-pointer"
+                                                        className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-red-600 transition-colors cursor-pointer"
                                                     >
                                                         <Trash2 className="w-5 h-5" />
                                                     </button>
@@ -139,10 +139,10 @@ export const PaginaPessoas: React.FC<PaginaPessoasProps> = ({
                 </div>
             </div>
 
-            {/* Extrato da Pessoa Selecionada */}
+            {/* extrato da pessoa selecionada */}
             {pessoaSelecionada && (
                 <section className="bg-white rounded-2xl shadow-md border-2 border-blue-500/20 overflow-hidden animate-fade-in-down">
-                    <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-blue-50/50 to-indigo-50/30 flex justify-between items-center">
+                    <div className="p-6 border-b border-slate-100 bg-gradient-to-r from-blue-50/50 to-slate-50/30 flex justify-between items-center">
                         <div>
                             <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">Histórico de Transações</span>
                             <h2 className="text-xl font-bold text-slate-800 mt-1">{pessoaSelecionada.nome.toUpperCase()}</h2>
@@ -181,14 +181,14 @@ export const PaginaPessoas: React.FC<PaginaPessoasProps> = ({
                                             <td className="py-3.5 px-6 text-slate-400 font-mono text-sm">{index + 1}</td>
                                             <td className="py-3.5 px-6">
                                                 <span className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-0.5 rounded-full ${t.tipo === 0
-                                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
-                                                    : 'bg-rose-50 text-rose-700 border border-rose-100'
+                                                    ? 'bg-blue-50 text-blue-700 border border-blue-100'
+                                                    : 'bg-red-50 text-red-700 border border-red-100'
                                                     }`}>
                                                     {t.tipo === 0 ? 'Receita' : 'Despesa'}
                                                 </span>
                                             </td>
                                             <td className="py-3.5 px-6 font-medium text-slate-700">{t.descricao}</td>
-                                            <td className={`py-3.5 px-6 font-bold ${t.tipo === 0 ? 'text-emerald-600' : 'text-slate-700'}`}>
+                                            <td className={`py-3.5 px-6 font-bold ${t.tipo === 0 ? 'text-blue-600' : 'text-slate-700'}`}>
                                                 R$ {t.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                             </td>
                                         </tr>

@@ -23,16 +23,16 @@ export const ModalConfirmacao: React.FC<ModalConfirmacaoProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            {/* Backdrop */}
+            {/* backdrop */}
             <div 
                 className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300"
                 onClick={onCancelar}
             />
 
-            {/* Modal Content */}
+            {/* modal content */}
             <div className="relative bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full p-6 overflow-hidden animate-fade-in-up">
                 <div className="flex items-start gap-4">
-                    <div className="p-3 bg-rose-50 rounded-full text-rose-600 shrink-0">
+                    <div className="p-3 bg-red-50 rounded-full text-red-600 shrink-0">
                         <AlertTriangle className="w-6 h-6" />
                     </div>
                     <div>

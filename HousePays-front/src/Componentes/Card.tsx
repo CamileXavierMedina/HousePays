@@ -4,7 +4,7 @@ interface CardProps {
     titulo: string;
     valor: number;
     icone: React.ReactNode;
-    tipo?: 'sucesso' | 'erro' | 'padrao';
+    tipo?: 'sucesso' | 'erro' | 'alerta' | 'padrao';
 }
 
 export const Card: React.FC<CardProps> = ({ titulo, valor, icone, tipo = 'padrao' }) => {
@@ -12,11 +12,14 @@ export const Card: React.FC<CardProps> = ({ titulo, valor, icone, tipo = 'padrao
     let classesValor = 'text-slate-800';
 
     if (tipo === 'sucesso') {
-        classesContainer = 'bg-emerald-50/50 border-emerald-100';
-        classesValor = 'text-emerald-700';
+        classesContainer = 'bg-blue-50/50 border-blue-100';
+        classesValor = 'text-blue-700';
     } else if (tipo === 'erro') {
-        classesContainer = 'bg-rose-50/50 border-rose-100';
-        classesValor = 'text-rose-700';
+        classesContainer = 'bg-red-50/50 border-red-100';
+        classesValor = 'text-red-700';
+    } else if (tipo === 'alerta') {
+        classesContainer = 'bg-amber-50/50 border-amber-100';
+        classesValor = 'text-amber-700';
     }
 
     return (

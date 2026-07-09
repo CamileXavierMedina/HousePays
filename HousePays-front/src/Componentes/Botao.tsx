@@ -22,13 +22,13 @@ export const Botao: React.FC<BotaoProps> = ({
             classeVariante = 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500/20';
             break;
         case 'secundario':
-            classeVariante = 'bg-slate-100 text-slate-600 hover:bg-slate-200 focus:ring-slate-500/20';
+            classeVariante = 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 focus:ring-slate-500/20';
             break;
         case 'perigo':
-            classeVariante = 'bg-rose-500 hover:bg-rose-600 text-white focus:ring-rose-500/20';
+            classeVariante = 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500/20';
             break;
         case 'sucesso':
-            classeVariante = 'bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-emerald-500/20';
+            classeVariante = 'bg-amber-500 hover:bg-amber-600 text-white focus:ring-amber-500/20';
             break;
     }
 

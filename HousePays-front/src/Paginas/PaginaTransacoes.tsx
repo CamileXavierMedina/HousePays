@@ -34,7 +34,7 @@ export const PaginaTransacoes: React.FC<PaginaTransacoesProps> = ({
     onCadastrarTransacao,
     loadingCadastro
 }) => {
-    // Resolve os moradores usando use()
+    // resolve os moradores usando use()
     const relatorio = use(pessoasPromise);
     const { pessoas } = relatorio;
 
@@ -46,7 +46,7 @@ export const PaginaTransacoes: React.FC<PaginaTransacoesProps> = ({
     return (
         <div className="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-xs border border-slate-100 animate-fade-in">
             <div className="flex items-center gap-2 mb-4">
-                <Plus className="w-5 h-5 text-emerald-600" />
+                <Plus className="w-5 h-5 text-blue-600" />
                 <h2 className="text-lg font-bold text-slate-800">Lançar Transação Financeira</h2>
             </div>
 
@@ -60,7 +60,7 @@ export const PaginaTransacoes: React.FC<PaginaTransacoesProps> = ({
                                 setFormTransacao({ ...formTransacao, pessoaId: e.target.value });
                                 setErroTransacao(null);
                             }}
-                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-hidden focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                         >
                             <option value="">Selecione...</option>
                             {pessoas.map(p => (
@@ -77,7 +77,7 @@ export const PaginaTransacoes: React.FC<PaginaTransacoesProps> = ({
                                 onClick={() => setFormTransacao({ ...formTransacao, tipo: TipoTransacao.Receita })}
                                 className={`py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                                     formTransacao.tipo === TipoTransacao.Receita
-                                        ? 'bg-emerald-500 text-white shadow-xs'
+                                        ? 'bg-blue-600 text-white shadow-xs'
                                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                 }`}
                             >
@@ -88,7 +88,7 @@ export const PaginaTransacoes: React.FC<PaginaTransacoesProps> = ({
                                 onClick={() => setFormTransacao({ ...formTransacao, tipo: TipoTransacao.Despesa })}
                                 className={`py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                                     formTransacao.tipo === TipoTransacao.Despesa
-                                        ? 'bg-rose-500 text-white shadow-xs'
+                                        ? 'bg-red-600 text-white shadow-xs'
                                         : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                                 }`}
                             >
@@ -118,7 +118,7 @@ export const PaginaTransacoes: React.FC<PaginaTransacoesProps> = ({
                 </div>
 
                 {erroTransacao && (
-                    <p className="text-xs text-rose-600 font-semibold flex items-start gap-1">
+                    <p className="text-xs text-red-600 font-semibold flex items-start gap-1">
                         <Plus className="w-3.5 h-3.5 shrink-0 mt-0.5" /> <span>{erroTransacao}</span>
                     </p>
                 )}

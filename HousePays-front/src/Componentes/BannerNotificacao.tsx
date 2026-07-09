@@ -17,21 +17,21 @@ export const BannerNotificacao: React.FC<BannerNotificacaoProps> = ({ mensagem, 
 
     switch (tipo) {
         case 'sucesso':
-            classeContainer = 'bg-emerald-50 border-emerald-500';
-            classeTexto = 'text-emerald-800';
-            classeIcone = 'text-emerald-500';
-            Icone = CheckCircle;
-            break;
-        case 'erro':
-            classeContainer = 'bg-rose-50 border-rose-500';
-            classeTexto = 'text-rose-800';
-            classeIcone = 'text-rose-500';
-            Icone = AlertCircle;
-            break;
-        case 'info':
             classeContainer = 'bg-blue-50 border-blue-500';
             classeTexto = 'text-blue-800';
             classeIcone = 'text-blue-500';
+            Icone = CheckCircle;
+            break;
+        case 'erro':
+            classeContainer = 'bg-red-50 border-red-500';
+            classeTexto = 'text-red-800';
+            classeIcone = 'text-red-500';
+            Icone = AlertCircle;
+            break;
+        case 'info':
+            classeContainer = 'bg-amber-50 border-amber-500';
+            classeTexto = 'text-amber-800';
+            classeIcone = 'text-amber-500';
             Icone = Info;
             break;
     }
