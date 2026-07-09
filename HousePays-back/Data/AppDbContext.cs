@@ -16,12 +16,8 @@ namespace HousePays.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           //config. da reacao de 1-n
-            modelBuilder.Entity<Transacao>()
-                .HasOne(t => t.Pessoa)
-                .WithMany(p => p.Transacoes)
-                .HasForeignKey(t => t.PessoaId)
-                .OnDelete(DeleteBehavior.Cascade);
+           //config. da reacao de 1 - n
+            modelBuilder.Entity<Transacao>().HasOne(t => t.Pessoa).WithMany(p => p.Transacoes).HasForeignKey(t => t.PessoaId).OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);//se apagar o registro pai os registros filhos tbm sao excluidos
         }

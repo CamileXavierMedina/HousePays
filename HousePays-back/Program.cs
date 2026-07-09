@@ -36,7 +36,7 @@ using(var scope = app.Services.CreateScope())
 }
 
 //endpoint de teste incial
-app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta prs rotas!");
+app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta para as rotas!");
 
 //--ROTA DE PESSOAS--//
 
@@ -51,6 +51,7 @@ app.MapGet("/pessoas", async (AppDbContext db) =>
 //rota pra consulta de totais
 app.MapGet("/pessoas/totais", async (AppDbContext db) =>
 {
+
     var pessoas = await db.Pessoas.Include(p => p.Transacoes).ToListAsync();
 
     //transf. a lista de pessoas com + e -
