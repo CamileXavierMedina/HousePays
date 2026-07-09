@@ -1,159 +1,58 @@
 using Microsoft.EntityFrameworkCore;
-using HousePays.Data;
-using HousePays.Models;
+using HousePays.Dados;
+using HousePays.Repositorios;
+using HousePays.Servicos;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//configura o BD sqlite 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=housepays.db"));
+// Configura o Banco de Dados SQLite
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlite("Data Source=housepays.db"));
 
-//coonfig. o cors pro react acessar a api
+// Configura as dependências do sistema (Repositórios e Serviços)
+builder.Services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
+builder.Services.AddScoped<ITransacaoRepositorio, TransacaoRepositorio>();
+builder.Services.AddScoped<IPessoaServico, PessoaServico>();
+builder.Services.AddScoped<ITransacaoServico, TransacaoServico>();
+
+// Configura o CORS para o React acessar a API
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")//porta que o react roda
-        .AllowAnyHeader().AllowAnyMethod();
+        policy.WithOrigins("http://localhost:5173") // Porta em que o React roda
+              .AllowAnyHeader()
+              .AllowAnyMethod();
     });
 });
 
-//evita loop eterno
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
-{
-    options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-});
+// Adiciona os Controladores com configuração para evitar loop de referência cíclica
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
+
+// Configura o OpenAPI/Swagger se necessário
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-//ativa allow do cors
+// Ativa o CORS
 app.UseCors("AllowReact");
 
-//garante q criará as tabelas do BD automaticamente
-using(var scope = app.Services.CreateScope())
+// Garante que as tabelas do Banco de Dados SQLite sejam criadas automaticamente
+using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
 }
 
-//endpoint de teste incial
+// Endpoint de teste inicial
 app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta para as rotas!");
 
-//--ROTA DE PESSOAS--//
-
-//lista as pessoas
-app.MapGet("/pessoas", async (AppDbContext db) =>
-{
-    var pessoas = await db.Pessoas.Include(p => p.Transacoes)// traaz todas movimentacoes da pessoa x
-    .ToListAsync();
-    return Results.Ok(pessoas);
-});
-
-//rota pra consulta de totais
-app.MapGet("/pessoas/totais", async (AppDbContext db) =>
-{
-
-    var pessoas = await db.Pessoas.Include(p => p.Transacoes).ToListAsync();
-
-    //transf. a lista de pessoas com + e -
-    var relatorio = pessoas.Select(p => new
-    {
-        p.Id,
-        p.Nome,
-        p.Idade,
-
-        //filtra e soma so tipo = receita
-        TotalReceitas = p.Transacoes.Where(t => t.Tipo == TipoTransacao.Receita).Sum(t => t.Valor),
-
-        // calculo do saldo R - D
-        Saldo = p.Transacoes.Where(t => t.Tipo == TipoTransacao.Receita).Sum(t => t.Valor) -
-                p.Transacoes.Where(t => t.Tipo == TipoTransacao.Despesa).Sum(t => t.Valor)
-    });
-
-    return Results.Ok(relatorio);
-});
-
-//cadastra alguem novo
-app.MapPost("/pessoas", async (Pessoa novaPessoa, AppDbContext db) =>
-{
-    if (string.IsNullOrWhiteSpace(novaPessoa.Nome))
-    {
-        return Results.BadRequest("O nome da pessoa é obrigatorio!");
-    }
-
-    if (novaPessoa.Idade < 0)
-    {
-        return Results.BadRequest("A idade nao pode ser negativa");
-    }
-
-    //id ja vem no guid.newguid 
-    db.Pessoas.Add(novaPessoa);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/pessoas/{novaPessoa.Id}", novaPessoa);
-
-});
-
-//excluir pessoa(exclusao cascata)
-app.MapDelete("/pessoas/{id:guid}", async (Guid id, AppDbContext db) =>
-{
-    var pessoa = await db.Pessoas.FindAsync(id);
-
-    if (pessoa == null)
-    {
-        return Results.NotFound("Pessoa nao identificada!");
-    }
-
-    //entende q config. a exclusao cascata e ja  remove transação sozinho
-    db.Pessoas.Remove(pessoa);
-    await db.SaveChangesAsync();
-
-    return Results.NoContent();
-});
-
-//--Rota de Transacoes--//
-
-//lista todas transac. cadastradas
-app.MapGet("/transacoes", async (AppDbContext db) =>
-{
-    var transacoes = await db.Transacoes
-        .Include(t => t.Pessoa)//junta com os dados de pessoa
-        .ToListAsync();
-    return Results.Ok(transacoes);
-});
-
-//cadastra nova transac.
-app.MapPost("/transacoes", async (Transacao novaTransacao, AppDbContext db) =>
-{
-    if (string.IsNullOrWhiteSpace(novaTransacao.Descricao))
-    {
-        return Results.BadRequest("A desrcrição da transação é obrigatoria!");
-    }
-
-    //valor maior que zero
-    if  (novaTransacao.Valor <= 0)
-    {
-        return Results.BadRequest("O valor da transação deve ser maior que zero!");
-    }
-
-    //verifica se apessoa existe no banco de dados
-    var pessoa = await db.Pessoas.FindAsync(novaTransacao.PessoaId);
-    if (pessoa == null)
-    {
-        return Results.BadRequest("A pessoa informada pra esta transação nao foi identificada.");
-    }
-
-    //menor de idade so cadastra despesas
-    if (pessoa.Idade < 18 && novaTransacao.Tipo == TipoTransacao.Receita)
-    {
-        return Results.BadRequest($"A pessoa '{pessoa.Nome}' tem apenas {pessoa.Idade} anos e, por isso so pode cadastrar despesas!");
-    }
-
-    novaTransacao.Pessoa = null;
-
-    db.Transacoes.Add(novaTransacao);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/transacoes/{novaTransacao.Id}", novaTransacao);
-});
+// Mapeia os Controladores
+app.MapControllers();
 
 app.Run();
