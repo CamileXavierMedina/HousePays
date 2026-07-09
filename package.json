@@ -1,7 +1,17 @@
 {
+  "name": "housepays-root",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:back": "dotnet run --project HousePays-back",
+    "dev:front": "npm.cmd run dev --prefix HousePays-front",
+    "dev": "concurrently \"npm run dev:back\" \"npm run dev:front\""
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
     "lucide-react": "^1.23.0",
     "tailwindcss": "^4.3.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
