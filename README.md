@@ -11,12 +11,14 @@ O HousePays tem a premissa de auxiliar no controle de gastos da sua residência,
 
 * .NET com C# para o back-end.
 * React com TypeScript para o front-end.
-* SQLite com visualização opcional via DBeaver para o banco de dados.
+* SQLite para o banco de dados.
 
 ## Estrutura do Projeto
 
 ├── HousePays-back (Pasta com o código C#)
+
 ├── HousePays-front (Pasta com o código React/TS)
+
 └── HousePays.sln (Arquivo de solução na raiz)
 
 ## Lógica do Sistema
