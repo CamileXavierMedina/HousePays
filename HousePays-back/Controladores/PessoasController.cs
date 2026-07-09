@@ -15,12 +15,14 @@ namespace HousePays.Controladores
         private readonly IPessoaServico _pessoaServico;
         private readonly ILogger<PessoasController> _logger;
 
+        // construtor que injeta o serviço de moradores e o logger
         public PessoasController(IPessoaServico pessoaServico, ILogger<PessoasController> logger)
         {
             _pessoaServico = pessoaServico;
             _logger = logger;
         }
 
+        // rota que busca todos os moradores cadastrados no sistema
         [HttpGet]
         public async Task<IActionResult> Listar()
         {
@@ -37,6 +39,7 @@ namespace HousePays.Controladores
             }
         }
 
+        // rota que gera o relatorio de saldos e totais consolidados da casa
         [HttpGet("totais")]
         public async Task<IActionResult> ObterTotais()
         {
@@ -53,6 +56,7 @@ namespace HousePays.Controladores
             }
         }
 
+        // rota para cadastrar um novo morador validando os dados
         [HttpPost]
         public async Task<IActionResult> Cadastrar([FromBody] PessoaCadastroDto dto)
         {
@@ -74,6 +78,7 @@ namespace HousePays.Controladores
             }
         }
 
+        // rota para excluir um morador e apagar suas transaçoes em cascata
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Excluir([FromRoute] Guid id)
         {

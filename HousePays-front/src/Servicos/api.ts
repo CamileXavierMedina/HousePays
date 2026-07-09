@@ -3,6 +3,7 @@ import type { Pessoa, PessoaCompleta, RelatorioTotais } from '../Tipos/Pessoa';
 import { TipoTransacao, type Transacao } from '../Tipos/Transacao';
 
 export const Api = {
+    // busca moradores cadastrados na api
     async obterPessoas(): Promise<PessoaCompleta[]> {
         const response = await fetch(`${CONFIG.API_URL}/pessoas`);
         if (!response.ok) {
@@ -12,6 +13,7 @@ export const Api = {
         return response.json();
     },
 
+    // busca o relatorio financeiro com os saldos consolidados
     async obterTotaisPessoas(): Promise<RelatorioTotais> {
         const response = await fetch(`${CONFIG.API_URL}/pessoas/totais`);
         if (!response.ok) {
@@ -21,6 +23,7 @@ export const Api = {
         return response.json();
     },
 
+    // envia os dados para inserir um novo morador
     async cadastrarPessoa(nome: string, idade: number): Promise<Pessoa> {
         const response = await fetch(`${CONFIG.API_URL}/pessoas`, {
             method: 'POST',
@@ -34,6 +37,7 @@ export const Api = {
         return response.json();
     },
 
+    // envia requisicao para deletar um morador
     async excluirPessoa(id: string): Promise<void> {
         const response = await fetch(`${CONFIG.API_URL}/pessoas/${id}`, {
             method: 'DELETE'
@@ -44,6 +48,7 @@ export const Api = {
         }
     },
 
+    // busca a listagem de todas as transaçoes lançadas
     async obterTransacoes(): Promise<Transacao[]> {
         const response = await fetch(`${CONFIG.API_URL}/transacoes`);
         if (!response.ok) {
@@ -53,6 +58,7 @@ export const Api = {
         return response.json();
     },
 
+    // envia os dados para registrar uma nova transaçao no banco
     async cadastrarTransacao(descricao: string, valor: number, tipo: TipoTransacao, pessoaId: string): Promise<Transacao> {
         const response = await fetch(`${CONFIG.API_URL}/transacoes`, {
             method: 'POST',

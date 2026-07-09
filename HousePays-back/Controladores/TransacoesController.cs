@@ -15,12 +15,14 @@ namespace HousePays.Controladores
         private readonly ITransacaoServico _transacaoServico;
         private readonly ILogger<TransacoesController> _logger;
 
+        // construtor que injeta o serviço de transaçoes e o logger
         public TransacoesController(ITransacaoServico transacaoServico, ILogger<TransacoesController> logger)
         {
             _transacaoServico = transacaoServico;
             _logger = logger;
         }
 
+        // rota para listar todas as transaçoes registradas no sistema
         [HttpGet]
         public async Task<IActionResult> Listar()
         {
@@ -37,6 +39,7 @@ namespace HousePays.Controladores
             }
         }
 
+        // rota para cadastrar uma nova transaçao validando regras de negocio
         [HttpPost]
         public async Task<IActionResult> Cadastrar([FromBody] TransacaoCadastroDto dto)
         {

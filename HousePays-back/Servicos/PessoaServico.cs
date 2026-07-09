@@ -15,18 +15,21 @@ namespace HousePays.Servicos
         private readonly IPessoaRepositorio _pessoaRepositorio;
         private readonly ILogger<PessoaServico> _logger;
 
+        // construtor que recebe o repositorio de pessoas e o logger
         public PessoaServico(IPessoaRepositorio pessoaRepositorio, ILogger<PessoaServico> logger)
         {
             _pessoaRepositorio = pessoaRepositorio;
             _logger = logger;
         }
 
+        // busca e lista todos os moradores com suas transaçoes
         public async Task<IEnumerable<Pessoa>> ListarPessoasAsync()
         {
             _logger.LogInformation("Iniciando listagem de todas as pessoas.");
             return await _pessoaRepositorio.ObterTodasComTransacoesAsync();
         }
 
+        // calcula receitas, despesas e saldo individual de cada morador e consolida o saldo geral
         public async Task<RelatorioTotaisDto> ObterRelatorioTotaisAsync()
         {
             _logger.LogInformation("Gerando relatório consolidado de totais por morador.");
@@ -70,6 +73,7 @@ namespace HousePays.Servicos
             };
         }
 
+        // cadastra uma nova pessoa validando nome obrigatorio e idade nao negativa
         public async Task<Pessoa> CadastrarPessoaAsync(PessoaCadastroDto dto)
         {
             _logger.LogInformation("Iniciando processo de cadastro para a pessoa '{Nome}'.", dto.Nome);
@@ -98,6 +102,7 @@ namespace HousePays.Servicos
             return novaPessoa;
         }
 
+        // remove um morador se ele existir no banco de dados
         public async Task ExcluirPessoaAsync(Guid id)
         {
             _logger.LogInformation("Iniciando remoção da pessoa com Id {Id}.", id);

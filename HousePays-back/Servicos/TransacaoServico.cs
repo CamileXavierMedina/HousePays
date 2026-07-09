@@ -14,6 +14,7 @@ namespace HousePays.Servicos
         private readonly IPessoaRepositorio _pessoaRepositorio;
         private readonly ILogger<TransacaoServico> _logger;
 
+        // construtor que injeta os repositorios de transaçao e pessoa
         public TransacaoServico(
             ITransacaoRepositorio transacaoRepositorio,
             IPessoaRepositorio pessoaRepositorio,
@@ -24,12 +25,14 @@ namespace HousePays.Servicos
             _logger = logger;
         }
 
+        // busca e retorna todas as transaçoes registradas
         public async Task<IEnumerable<Transacao>> ListarTransacoesAsync()
         {
             _logger.LogInformation("Iniciando listagem de todas as transações.");
             return await _transacaoRepositorio.ObterTodasAsync();
         }
 
+        // realiza as validaçoes de campos e bloqueia receitas para menores de 18 anos
         public async Task<Transacao> CadastrarTransacaoAsync(TransacaoCadastroDto dto)
         {
             _logger.LogInformation("Iniciando processo de cadastro para a transação '{Descricao}'.", dto.Descricao);

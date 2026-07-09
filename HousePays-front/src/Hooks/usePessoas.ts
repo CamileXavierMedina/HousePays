@@ -3,21 +3,27 @@ import { Api } from '../Servicos/api';
 import type { PessoaCompleta, RelatorioTotais } from '../Tipos/Pessoa';
 
 export const usePessoas = () => {
+    // promise que gerencia o estado de carregamento assincrono de moradores
     const [pessoasPromise, setPessoasPromise] = useState<Promise<RelatorioTotais>>(() => Api.obterTotaisPessoas());
+    
+    // morador selecionado para exibiçao do extrato detalhado
     const [pessoaSelecionada, setPessoaSelecionada] = useState<PessoaCompleta | null>(null);
     const [loadingDetalhes, setLoadingDetalhes] = useState(false);
     const [loadingMutacao, setLoadingMutacao] = useState(false);
     
+    // estado que controla os dados do formulario de cadastro
     const [formCadastro, setFormCadastro] = useState({
         nome: '',
         idade: ''
     });
     const [erroCadastro, setErroCadastro] = useState<string | null>(null);
 
+    // recarrega a lista de moradores buscando novos dados no backend
     const recarregar = useCallback(() => {
         setPessoasPromise(Api.obterTotaisPessoas());
     }, []);
 
+    // envia os dados para cadastrar um novo morador e atualiza a listagem
     const cadastrar = async (nome: string, idade: number) => {
         setErroCadastro(null);
         setLoadingMutacao(true);
@@ -33,6 +39,7 @@ export const usePessoas = () => {
         }
     };
 
+    // remove um morador do sistema
     const excluir = async (id: string) => {
         setLoadingMutacao(true);
         try {
@@ -48,6 +55,7 @@ export const usePessoas = () => {
         }
     };
 
+    // busca os detalhes de um morador especifico para alimentar o extrato
     const obterDetalhes = async (id: string) => {
         setLoadingDetalhes(true);
         try {
