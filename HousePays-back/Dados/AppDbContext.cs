@@ -14,7 +14,7 @@ namespace HousePays.Dados
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuração do relacionamento 1 - N com Cascade Delete
+            // configuraçao do relacionamento 1 - n com cascade delete
             modelBuilder.Entity<Transacao>()
                 .HasOne(t => t.Pessoa)
                 .WithMany(p => p.Transacoes)

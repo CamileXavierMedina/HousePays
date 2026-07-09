@@ -5,28 +5,28 @@ using HousePays.Servicos;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configura o Banco de Dados SQLite
+// configura o banco de dados sqlite
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseSqlite("Data Source=housepays.db"));
 
-// Configura as dependências do sistema (Repositórios e Serviços)
+// configura as dependencias do sistema (repositorios e serviços)
 builder.Services.AddScoped<IPessoaRepositorio, PessoaRepositorio>();
 builder.Services.AddScoped<ITransacaoRepositorio, TransacaoRepositorio>();
 builder.Services.AddScoped<IPessoaServico, PessoaServico>();
 builder.Services.AddScoped<ITransacaoServico, TransacaoServico>();
 
-// Configura o CORS para o React acessar a API
+// configura o cors para o react acessar a api
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Porta em que o React roda
+        policy.WithOrigins("http://localhost:5173") // porta em que o react roda
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
-// Adiciona os Controladores com configuração para evitar loop de referência cíclica
+// adiciona os controladores com configuraçao para evitar loop de referencia ciclica
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -34,25 +34,25 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
-// Configura o OpenAPI/Swagger se necessário
+// configura o openapi/swagger se necessario
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
-// Ativa o CORS
+// ativa o cors
 app.UseCors("AllowReact");
 
-// Garante que as tabelas do Banco de Dados SQLite sejam criadas automaticamente
+// garante que as tabelas do banco de dados sqlite sejam criadas automaticamente
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
 }
 
-// Endpoint de teste inicial
+// endpoint de teste inicial
 app.MapGet("/", () => "Api housepays ativa, configurada no sqlite e pronta para as rotas!");
 
-// Mapeia os Controladores
+// mapeia os controladores
 app.MapControllers();
 
 app.Run();

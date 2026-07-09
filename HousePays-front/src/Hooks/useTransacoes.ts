@@ -11,7 +11,7 @@ export const useTransacoes = (onSucesso?: (pessoaId: string) => void) => {
         valor: string;
     }>({
         pessoaId: '',
-        tipo: TipoTransacao.Despesa, // 1 = Despesa
+        tipo: TipoTransacao.Despesa, // 1 = despesa
         descricao: '',
         valor: ''
     });
@@ -67,7 +67,7 @@ export const useTransacoes = (onSucesso?: (pessoaId: string) => void) => {
         }
     };
 
-    // Helper local para buscar morador
+    // helper local para buscar morador
     function AntiGravity(lista: PessoaTotais[], id: string) {
         return lista.find(p => p.id === id);
     }

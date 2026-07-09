@@ -28,13 +28,13 @@ export default function App() {
         obterDetalhes
     } = usePessoas();
 
-    // Notificações temporárias de feedback para substituir popups de alert()
+    // notificaçoes temporarias de feedback para substituir popups de alert()
     const [notificacao, setNotificacao] = useState<{
         mensagem: string | null;
         tipo: 'sucesso' | 'erro' | 'info';
     }>({ mensagem: null, tipo: 'info' });
 
-    // Estado do Modal de Confirmação customizado para substituir confirm()
+    // estado do modal de confirmaçao customizado para substituir confirm()
     const [modalExcluir, setModalExcluir] = useState<{
         aberto: boolean;
         id: string;
@@ -49,7 +49,7 @@ export default function App() {
         loadingCadastro: loadingCadastroTransacao,
         cadastrar: executarCadastroTransacao
     } = useTransacoes(() => {
-        // Callback executado ao registrar a transação com sucesso
+        // callback executado ao registrar a transaçao com sucesso
         recarregar();
         setNotificacao({
             mensagem: 'Transação financeira lançada com sucesso!',
@@ -58,7 +58,7 @@ export default function App() {
         navegarPara('dashboard');
     });
 
-    // Auto-ocultar banner de feedback após 4 segundos
+    // auto-ocultar banner de feedback apos 4 segundos
     useEffect(() => {
         if (notificacao.mensagem) {
             const timer = setTimeout(() => {
@@ -122,7 +122,7 @@ export default function App() {
                     </div>
                 )}
 
-                {/* Área de conteúdo gerenciada por Suspense e ErrorBoundary */}
+                {/* area de conteudo gerenciada por suspense e errorboundary */}
                 <FronteiraErro>
                     <Suspense fallback={<Carregando />}>
                         {rota === 'dashboard' && (
@@ -171,7 +171,7 @@ export default function App() {
                 </FronteiraErro>
             </div>
 
-            {/* Modal de Confirmação customizado (substitui o confirm() padrão) */}
+            {/* modal de confirmaçao customizado (substitui o confirm() padrao) */}
             <ModalConfirmacao
                 aberto={modalExcluir.aberto}
                 titulo="Confirmar Exclusão"
