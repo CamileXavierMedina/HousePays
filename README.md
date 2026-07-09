@@ -23,7 +23,7 @@ O HousePays tem a premissa de auxiliar no controle de gastos da sua residência,
 
 ## Lógica do Sistema
 
-A maior parte da lógica de persistência e validações de regras de negócios foi isolada no back-end utilizando C# e LINQ, garantindo a segurança dos dados e melhor organização do código.
+A maior parte da lógica de persistência e validações de regras de negócios foi isolada no back-end utilizando C#.
 
 ## Funcionalidades
 
