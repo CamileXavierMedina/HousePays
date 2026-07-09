@@ -22,6 +22,9 @@
  └── 📄 HousePays.sln (Arquivo de solução na raiz)
 
 
+## Logica
+### A maioria da logica foi feita isolada via backend utilizando c# e LINQ para segurança dos dados e por ser minha area de dominio!
+
 ## Funcionalidades
 
 #### Cadastro de pessoas:
